@@ -12,24 +12,24 @@ export default function Home() {
           이동재
         </h1>
         <p className="mt-1 text-sm font-medium text-indigo-600 dark:text-indigo-400">
-          Student &amp; Vibe Coder
+          Frontend &amp; Web Developer
         </p>
 
         {/* Bio */}
         <p className="mt-4 text-base leading-relaxed text-gray-600 dark:text-zinc-300">
-          안녕하세요! 바이브 코딩을 배우고 있는 대학생입니다.
+          안녕하세요! 더 나은 사용자 경험과 깔끔한 코드 구조를 고민하는 웹 개발자입니다. 새로운 기술을 탐구하고 문제를 해결하며 함께 성장하는 것을 즐깁니다.
         </p>
 
         {/* Badges / Tags */}
         <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
           <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-300">
-            💻 바이브 코딩
+            💻 Web Development
           </span>
           <span className="rounded-full bg-purple-50 px-3 py-1 text-xs font-medium text-purple-700 dark:bg-purple-950/50 dark:text-purple-300">
-            🎓 대학생
+            ⚛️ React &amp; Next.js
           </span>
           <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 dark:bg-blue-950/50 dark:text-blue-300">
-            🚀 Next.js
+            🚀 Frontend &amp; UI/UX
           </span>
         </div>
       </main>
