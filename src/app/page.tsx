@@ -2,365 +2,542 @@
 
 import { useState } from "react";
 
-interface SocialLink {
-  title: string;
-  subtitle: string;
-  url: string;
-  icon: string;
-  badge?: string;
-  isExternal?: boolean;
-  action?: "copy" | "link";
-  copyValue?: string;
-}
-
 export default function Home() {
   const [copiedText, setCopiedText] = useState<string | null>(null);
+  const [selectedChip, setSelectedChip] = useState<string>("nextjs");
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
-    setCopiedText(`${label} 복사되었습니다! 🎉`);
+    setCopiedText(`${label}가 클립보드에 복사되었습니다.`);
     setTimeout(() => {
       setCopiedText(null);
-    }, 2500);
+    }, 2400);
   };
 
-  const shareProfile = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: "이동재 | Frontend Developer",
-        text: "프론트엔드 개발자 이동재의 프로필 링크입니다.",
-        url: window.location.href,
-      }).catch(() => {});
-    } else {
-      copyToClipboard(window.location.href, "프로필 링크가");
-    }
-  };
-
-  const links: SocialLink[] = [
-    {
-      title: "GitHub",
-      subtitle: "github.com/aquadj99 • 코드 저장소 및 오픈소스",
-      url: "https://github.com/aquadj99",
-      icon: "github",
-      badge: "Active",
-      isExternal: true,
-    },
-    {
-      title: "Portfolio",
-      subtitle: "주요 프로젝트 및 상세 작업 모음",
-      url: "#",
-      icon: "portfolio",
-      badge: "Featured",
-      isExternal: true,
-    },
-    {
-      title: "Tech Blog",
-      subtitle: "개발 인사이트 및 트러블슈팅 기록",
-      url: "#",
-      icon: "blog",
-      isExternal: true,
-    },
-    {
-      title: "LinkedIn",
-      subtitle: "경력 소개 및 프로페셔널 네트워킹",
-      url: "https://linkedin.com",
-      icon: "linkedin",
-      isExternal: true,
-    },
-    {
-      title: "Email Me",
-      subtitle: "aquadj99@gmail.com • 언제든 편하게 연락주세요",
-      url: "mailto:aquadj99@gmail.com",
-      icon: "email",
-      action: "copy",
-      copyValue: "aquadj99@gmail.com",
-    },
-  ];
-
-  const skills = [
-    { name: "Next.js 16", color: "from-zinc-700 to-zinc-900 text-white" },
-    { name: "React 19", color: "from-cyan-500 to-blue-600 text-white" },
-    { name: "TypeScript", color: "from-blue-600 to-indigo-600 text-white" },
-    { name: "Tailwind CSS", color: "from-teal-400 to-cyan-500 text-white" },
-    { name: "UI / UX Design", color: "from-purple-500 to-pink-500 text-white" },
-    { name: "Performance Optimization", color: "from-amber-500 to-orange-500 text-white" },
-  ];
-
-  const highlights = [
-    { label: "직무", value: "Frontend" },
-    { label: "상태", value: "협업 가능 🟢" },
-    { label: "위치", value: "Seoul, KR 🇰🇷" },
+  const stackChips = [
+    { id: "nextjs", label: "Next.js 16", desc: "Turbopack 기반의 빠른 빌드와 React 서버 컴포넌트(RSC) 아키텍처" },
+    { id: "react", label: "React 19", desc: "동시성 렌더링, 서버 액션 및 향상된 상태 관리 훅" },
+    { id: "ts", label: "TypeScript", desc: "엄격한 타입 안전성과 안정적인 컴포넌트 인터페이스 설계" },
+    { id: "tailwind", label: "Tailwind CSS v4", desc: "고성능 유틸리티 퍼스트 스타일링과 최적화된 CSS 번들" },
+    { id: "perf", label: "웹 성능 최적화", desc: "50ms 미만의 즉각적인 인터랙션 반응성과 코어 웹 바이탈 최적화" },
   ];
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-slate-50 selection:bg-indigo-500 selection:text-white dark:bg-zinc-950 font-sans">
-      {/* Dynamic Background Glow Effects */}
-      <div
-        className="pointer-events-none absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-indigo-400/25 via-purple-400/20 to-transparent blur-3xl dark:from-indigo-600/20 dark:via-purple-600/15"
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none absolute top-1/3 -right-40 h-[450px] w-[450px] rounded-full bg-gradient-to-tl from-pink-400/25 via-rose-300/15 to-transparent blur-3xl dark:from-pink-600/15 dark:via-purple-900/20"
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none absolute -bottom-40 left-1/4 h-[400px] w-[400px] rounded-full bg-gradient-to-tr from-sky-400/20 via-teal-300/15 to-transparent blur-3xl dark:from-teal-700/15"
-        aria-hidden="true"
-      />
+    <div className="min-h-screen bg-white text-[#1d1d1f] font-sans antialiased selection:bg-[#0066cc] selection:text-white cursor-default">
+      
+      {/* ========================================================= */}
+      {/* 1. 글로벌 네비게이션: 44px, 순수 블랙 (#000000)           */}
+      {/* ========================================================= */}
+      <header className="sticky top-0 z-50 bg-[#000000] text-white">
+        <div className="mx-auto flex h-[44px] max-w-[1024px] items-center justify-between px-4 sm:px-6 text-[12px] font-normal tracking-[-0.01em]">
+          
+          {/* 텍스트 브랜드 로고 (애플 로고 완전 제거) */}
+          <a href="#" className="font-semibold text-white tracking-tight hover:opacity-80 transition-opacity">
+            MyLink
+          </a>
 
-      {/* Main Container */}
-      <main className="relative z-10 mx-auto flex min-h-screen max-w-xl flex-col items-center px-5 py-12 sm:py-16">
-        {/* Floating Top Actions */}
-        <div className="flex w-full items-center justify-between pb-6">
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-50/70 px-3 py-1 text-xs font-semibold text-emerald-700 backdrop-blur-md dark:border-emerald-500/20 dark:bg-emerald-950/40 dark:text-emerald-400">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
-            </span>
-            Available for Projects
+          <div className="hidden sm:flex items-center gap-7 text-[#cccccc]">
+            <a href="#overview" className="hover:text-white transition-colors">소개</a>
+            <a href="#mylink" className="hover:text-white transition-colors">엔지니어링</a>
+            <a href="#hubs" className="hover:text-white transition-colors">연결 허브</a>
+            <a href="#capabilities" className="hover:text-white transition-colors">기술 스택</a>
+            <a href="#contact" className="hover:text-white transition-colors">문의하기</a>
           </div>
 
-          <button
-            onClick={shareProfile}
-            type="button"
-            className="group inline-flex items-center gap-1.5 rounded-full border border-zinc-200/80 bg-white/80 px-3.5 py-1.5 text-xs font-medium text-zinc-700 shadow-sm backdrop-blur-md transition-all duration-200 hover:border-zinc-300 hover:bg-white hover:text-zinc-900 hover:shadow active:scale-95 dark:border-zinc-800 dark:bg-zinc-900/80 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:bg-zinc-900 dark:hover:text-white cursor-pointer"
-            title="프로필 공유하기"
-          >
-            <svg
-              className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-              stroke="currentColor"
+          <div className="flex items-center gap-4 text-[#cccccc]">
+            <button
+              type="button"
+              onClick={() => copyToClipboard("aquadj99@gmail.com", "이메일 주소")}
+              className="hover:text-white transition-colors text-[11px] text-[#2997ff]"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
-              />
-            </svg>
-            공유
-          </button>
+              이메일 복사
+            </button>
+            <span className="opacity-40">|</span>
+            <span className="text-[11px] text-zinc-400">한국어</span>
+          </div>
         </div>
+      </header>
 
-        {/* Profile Card Container */}
-        <section className="w-full rounded-3xl border border-white/60 bg-white/70 p-7 shadow-xl shadow-indigo-500/5 backdrop-blur-xl transition-all dark:border-zinc-800/80 dark:bg-zinc-900/70 dark:shadow-black/40 sm:p-9">
-          {/* Avatar Section */}
-          <div className="flex flex-col items-center text-center">
-            <div className="relative mb-5">
-              <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 opacity-70 blur-sm transition duration-500 group-hover:opacity-100 animate-pulse" />
-              <div className="relative flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-tr from-indigo-600 via-indigo-500 to-purple-600 text-4xl font-extrabold tracking-wider text-white shadow-xl ring-4 ring-white dark:ring-zinc-900">
-                동재
-              </div>
-              <div
-                className="absolute right-1 bottom-1 flex h-7 w-7 items-center justify-center rounded-full bg-white shadow-md ring-2 ring-white dark:bg-zinc-900 dark:ring-zinc-900"
-                title="인증된 프로필"
-              >
-                <svg
-                  className="h-4 w-4 text-indigo-600 dark:text-indigo-400"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-            </div>
-
-            {/* Name & Titles */}
-            <h1 className="text-2xl font-black tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-3xl">
+      {/* ========================================================= */}
+      {/* 2. 서브 네비게이션: 52px, 프로스티드 글래스, 블루 필 버튼 */}
+      {/* ========================================================= */}
+      <nav className="sticky top-[44px] z-40 apple-frosted border-b border-[#0000000a]">
+        <div className="mx-auto flex h-[52px] max-w-[1024px] items-center justify-between px-4 sm:px-6">
+          <div className="flex items-center gap-2">
+            <span className="text-[20px] sm:text-[21px] font-semibold tracking-[-0.015em] text-[#1d1d1f]">
               이동재
-            </h1>
-            <p className="mt-1 text-sm font-semibold tracking-wide text-indigo-600 dark:text-indigo-400">
-              Frontend &amp; Web Developer
-            </p>
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5">
-              @dongjae • aquadj99
-            </p>
+            </span>
+            <span className="text-[12px] font-normal text-zinc-400 hidden sm:inline">
+              웹 프론트엔드 엔지니어
+            </span>
+          </div>
 
-            {/* Bio Description */}
-            <p className="mt-4 max-w-md text-sm leading-relaxed text-zinc-600 dark:text-zinc-300">
-              작은 디테일이 주는 뛰어난 사용자 경험과 깔끔하고 유연한 코드 아키텍처를 추구합니다.
-              사용자의 문제를 해결하고 새로운 웹 기술을 탐구하는 것에 큰 즐거움을 느낍니다.
-            </p>
+          <div className="flex items-center gap-4">
+            <a href="#overview" className="hidden md:inline text-[14px] text-[#1d1d1f] hover:text-[#0066cc]">
+              개요
+            </a>
+            <a href="#hubs" className="hidden md:inline text-[14px] text-[#1d1d1f] hover:text-[#0066cc]">
+              링크 허브
+            </a>
+            <a href="#capabilities" className="hidden md:inline text-[14px] text-[#1d1d1f] hover:text-[#0066cc]">
+              기술 역량
+            </a>
 
-            {/* Mini Highlight Stats */}
-            <div className="mt-6 grid w-full grid-cols-3 gap-2.5 rounded-2xl bg-zinc-100/70 p-3 text-center dark:bg-zinc-800/50">
-              {highlights.map((item, idx) => (
-                <div key={idx} className="flex flex-col items-center">
-                  <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
-                    {item.label}
-                  </span>
-                  <span className="mt-0.5 text-xs font-bold text-zinc-800 dark:text-zinc-200">
-                    {item.value}
-                  </span>
+            {/* 영구 고정 블루 필 액션 버튼 */}
+            <a
+              href="mailto:aquadj99@gmail.com"
+              className="apple-press-scale inline-flex items-center justify-center rounded-full bg-[#0066cc] px-4 py-1.5 text-[12px] font-normal text-white hover:bg-[#0071e3] focus:outline-none focus:ring-2 focus:ring-[#0071e3] transition-colors"
+            >
+              프로젝트 제안
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      {/* ========================================================= */}
+      {/* 섹션 1: 순수 화이트 히어로 타일 (product-tile-light)      */}
+      {/* ========================================================= */}
+      <section id="overview" className="bg-white py-16 sm:py-24 text-center">
+        <div className="mx-auto max-w-[980px] px-4 sm:px-6">
+          
+          <p className="text-[17px] font-semibold tracking-[-0.015em] text-[#0066cc] mb-2">
+            프로필 &amp; 웹 아키텍처
+          </p>
+
+          <h1 className="text-[40px] sm:text-[56px] font-semibold tracking-[-0.025em] leading-[1.07] text-[#1d1d1f]">
+            이동재
+          </h1>
+
+          <p className="mt-3 text-[22px] sm:text-[28px] font-normal tracking-[0.007em] leading-[1.14] text-[#1d1d1f]">
+            사용자 중심의 프론트엔드 아키텍트 &amp; 개발자.
+          </p>
+
+          <p className="mt-4 max-w-xl mx-auto text-[17px] font-normal leading-[1.47] text-[#1d1d1f]">
+            전문적인 워크플로우와 뛰어난 반응성. 모든 인터랙션이 자연스럽고 무게감 없이 즉각적으로 전달되는 웹 인터페이스를 만듭니다.
+          </p>
+
+          {/* 블루 필 액션 버튼 2개: Primary + Ghost Pill */}
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3.5">
+            <a
+              href="#hubs"
+              className="apple-press-scale inline-flex items-center justify-center rounded-full bg-[#0066cc] px-[22px] py-[11px] text-[17px] font-normal text-white hover:bg-[#0071e3] focus:outline-none focus:ring-2 focus:ring-[#0071e3]"
+            >
+              허브 둘러보기
+            </a>
+            <a
+              href="https://github.com/aquadj99"
+              target="_blank"
+              rel="noreferrer"
+              className="apple-press-scale inline-flex items-center justify-center rounded-full border border-[#0066cc] bg-transparent px-[22px] py-[11px] text-[17px] font-normal text-[#0066cc] hover:bg-[#0066cc08]"
+            >
+              GitHub 바로가기 ↗
+            </a>
+          </div>
+
+          {/* 스튜디오 화면 렌더 프레임 (Apple 단일 소프트 섀도우 적용) */}
+          <div className="mt-14 sm:mt-16 flex justify-center">
+            <div className="w-full max-w-[840px] rounded-[18px] border border-[#e0e0e0] bg-[#fafafc] overflow-hidden apple-product-shadow text-left">
+              
+              {/* 상단 윈도우 바 */}
+              <div className="flex h-10 items-center justify-between border-b border-[#0000000d] bg-[#f5f5f7] px-4">
+                <div className="flex items-center gap-2">
+                  <span className="h-3 w-3 rounded-full bg-[#ff5f56]" />
+                  <span className="h-3 w-3 rounded-full bg-[#ffbd2e]" />
+                  <span className="h-3 w-3 rounded-full bg-[#27c93f]" />
                 </div>
-              ))}
+                <div className="rounded-md bg-white/80 px-4 py-1 text-[11px] text-zinc-500 font-mono border border-black/5">
+                  dongjae.dev/소개
+                </div>
+                <div className="w-10" />
+              </div>
+
+              {/* 윈도우 본문 영역 */}
+              <div className="p-8 sm:p-12 bg-white">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="md:col-span-2 space-y-4">
+                    <span className="text-[12px] font-semibold text-[#0066cc] uppercase tracking-wider">
+                      핵심 지향점
+                    </span>
+                    <h2 className="text-[26px] sm:text-[28px] font-semibold tracking-[-0.015em] text-[#1d1d1f]">
+                      손끝에서 느껴지는 즉각적인 반응성.
+                    </h2>
+                    <p className="text-[17px] font-normal leading-[1.47] text-[#1d1d1f]">
+                      Next.js 16의 레이아웃 이동 없는 서버 컴포넌트부터 서브 밀리초 단위의 정밀한 상태 전환까지, 
+                      모든 코드는 명확함과 확장성, 순수한 디지털 경험의 우아함을 추구합니다.
+                    </p>
+                    <div className="pt-2 flex flex-wrap items-center gap-6 text-[14px]">
+                      <div>
+                        <span className="text-zinc-400 block text-[12px]">위치</span>
+                        <span className="font-semibold">대한민국 서울</span>
+                      </div>
+                      <div>
+                        <span className="text-zinc-400 block text-[12px]">전문 분야</span>
+                        <span className="font-semibold">Next.js &amp; TypeScript</span>
+                      </div>
+                      <div>
+                        <span className="text-zinc-400 block text-[12px]">협업 상태</span>
+                        <span className="font-semibold text-[#0066cc]">프로젝트 협업 가능</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="rounded-[14px] bg-[#f5f5f7] p-5 flex flex-col justify-between border border-[#e0e0e0]">
+                    <div>
+                      <span className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
+                        주요 지표
+                      </span>
+                      <div className="mt-3 text-[32px] font-semibold tracking-tight text-[#1d1d1f]">
+                        100%
+                      </div>
+                      <p className="text-[14px] text-zinc-600 mt-1">
+                        완성도와 픽셀 정밀도를 향한 집념.
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => copyToClipboard("aquadj99@gmail.com", "이메일 주소")}
+                      className="apple-press-scale mt-6 w-full rounded-full bg-white border border-[#e0e0e0] py-2 text-[13px] font-semibold text-[#0066cc] hover:bg-zinc-50"
+                    >
+                      연락처 이메일 복사
+                    </button>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
 
-          {/* Links Section */}
-          <div className="mt-8 space-y-3">
-            <div className="flex items-center justify-between px-1">
-              <h2 className="text-xs font-bold tracking-wider text-zinc-400 uppercase dark:text-zinc-500">
-                Connected Links
-              </h2>
-              <span className="text-[11px] text-zinc-400">클릭하여 이동 및 복사</span>
-            </div>
+        </div>
+      </section>
 
-            {links.map((link, idx) => {
-              const isCopy = link.action === "copy";
-              const content = (
-                <div className="flex items-center gap-3.5">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-indigo-50/80 text-indigo-600 transition-colors group-hover:bg-indigo-600 group-hover:text-white dark:bg-zinc-800 dark:text-indigo-400 dark:group-hover:bg-indigo-600 dark:group-hover:text-white">
-                    {renderIcon(link.icon)}
-                  </div>
-                  <div className="flex-1 text-left">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-bold text-zinc-900 group-hover:text-indigo-600 dark:text-zinc-100 dark:group-hover:text-indigo-400 transition-colors">
-                        {link.title}
-                      </span>
-                      {link.badge && (
-                        <span className="rounded-full bg-indigo-100 px-2 py-0.5 text-[10px] font-semibold text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
-                          {link.badge}
-                        </span>
-                      )}
-                    </div>
-                    <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-1">
-                      {link.subtitle}
-                    </p>
-                  </div>
-                  <div className="text-zinc-400 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                    {isCopy ? (
-                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75" />
-                      </svg>
-                    ) : (
-                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
-                      </svg>
-                    )}
-                  </div>
+      {/* ========================================================= */}
+      {/* 섹션 2: 니어블랙 다크 타일 (#272729) (product-tile-dark)  */}
+      {/* ========================================================= */}
+      <section id="mylink" className="bg-[#272729] py-20 sm:py-28 text-white text-center">
+        <div className="mx-auto max-w-[980px] px-4 sm:px-6">
+          
+          <p className="text-[17px] font-semibold tracking-[-0.015em] text-[#2997ff] mb-2">
+            MyLink Pro
+          </p>
+
+          <h2 className="text-[34px] sm:text-[40px] font-semibold tracking-[-0.02em] leading-[1.1] text-white">
+            현대적인 웹 성능을 위한 엔지니어링.
+          </h2>
+
+          <p className="mt-3 text-[22px] sm:text-[28px] font-normal leading-[1.14] text-[#cccccc]">
+            불필요한 추상화 없는 극상의 유연함.
+          </p>
+
+          <p className="mt-4 max-w-xl mx-auto text-[17px] font-normal leading-[1.47] text-[#cccccc]">
+            Next.js 16과 Turbopack 기반으로 설계되었습니다. 정갈하고 고요하며, 
+            사용자의 모든 프레임을 존중하는 신뢰도 높은 소프트웨어 아키텍처를 지향합니다.
+          </p>
+
+          {/* 다크 서피스 전용 스카이 링크 블루 (#2997ff) */}
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-6 text-[17px]">
+            <a
+              href="https://github.com/aquadj99"
+              target="_blank"
+              rel="noreferrer"
+              className="text-[#2997ff] hover:underline"
+            >
+              GitHub 저장소 살펴보기 ↗
+            </a>
+            <a
+              href="#capabilities"
+              className="text-[#2997ff] hover:underline"
+            >
+              아키텍처 스펙 확인하기 ↗
+            </a>
+          </div>
+
+          {/* 다크 스펙 프레임 */}
+          <div className="mt-14 flex justify-center">
+            <div className="w-full max-w-[760px] rounded-[18px] bg-[#1d1d1f] p-8 border border-white/10 apple-product-shadow text-left">
+              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                <span className="font-mono text-[12px] text-[#2997ff]">
+                  // 시스템 사양
+                </span>
+                <span className="text-[12px] text-[#cccccc]">
+                  v2.0 • 공식 릴리즈
+                </span>
+              </div>
+
+              <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-6 font-mono text-[13px]">
+                <div className="p-4 rounded-[12px] bg-[#2a2a2c] border border-white/5">
+                  <span className="text-zinc-400 block text-[11px]">프레임워크</span>
+                  <span className="text-white font-semibold text-[15px] mt-1 block">Next.js 16.3</span>
+                  <span className="text-zinc-500 text-[11px] mt-1 block">App Router 네이티브</span>
                 </div>
-              );
+                <div className="p-4 rounded-[12px] bg-[#2a2a2c] border border-white/5">
+                  <span className="text-zinc-400 block text-[11px]">런타임</span>
+                  <span className="text-white font-semibold text-[15px] mt-1 block">React 19.2</span>
+                  <span className="text-zinc-500 text-[11px] mt-1 block">동시성 렌더링 &amp; 액션</span>
+                </div>
+                <div className="p-4 rounded-[12px] bg-[#2a2a2c] border border-white/5">
+                  <span className="text-zinc-400 block text-[11px]">컴파일러</span>
+                  <span className="text-white font-semibold text-[15px] mt-1 block">Turbopack</span>
+                  <span className="text-zinc-500 text-[11px] mt-1 block">초고속 증분 빌드</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
-              if (isCopy && link.copyValue) {
-                return (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => copyToClipboard(link.copyValue!, link.title)}
-                    className="group block w-full rounded-2xl border border-zinc-200/80 bg-white/60 p-3.5 shadow-sm backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-indigo-300 hover:bg-white hover:shadow-md dark:border-zinc-800 dark:bg-zinc-800/40 dark:hover:border-indigo-500/50 dark:hover:bg-zinc-800/80 cursor-pointer"
-                  >
-                    {content}
-                  </button>
-                );
-              }
+        </div>
+      </section>
 
+      {/* ========================================================= */}
+      {/* 섹션 3: 파치먼트 유틸리티 카드 그리드 (#f5f5f7)           */}
+      {/* ========================================================= */}
+      <section id="hubs" className="bg-[#f5f5f7] py-20 sm:py-24">
+        <div className="mx-auto max-w-[1024px] px-4 sm:px-6">
+          
+          <div className="text-center mb-12">
+            <h2 className="text-[34px] sm:text-[40px] font-semibold tracking-[-0.02em] text-[#1d1d1f]">
+              연결된 허브.
+            </h2>
+            <p className="mt-2 text-[17px] font-normal text-zinc-600">
+              핵심 채널, 소스코드 저장소 및 직접적인 연락처 모음입니다.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              {
+                title: "GitHub 저장소",
+                desc: "오픈소스 기여 내역, 실험적인 프로젝트 및 전체 소스코드를 확인하실 수 있습니다.",
+                meta: "@aquadj99",
+                action: "코드 보기",
+                url: "https://github.com/aquadj99",
+                isExternal: true,
+              },
+              {
+                title: "포트폴리오 쇼케이스",
+                desc: "인터랙티브 웹 프로덕션 작업물과 상세 구현 사례를 모아놓은 쇼케이스입니다.",
+                meta: "주요 작업 모음",
+                action: "작업물 확인",
+                url: "#overview",
+                isExternal: false,
+              },
+              {
+                title: "기술 블로그 & 기록",
+                desc: "웹 성능 최적화, 프론트엔드 아키텍처 및 트러블슈팅 경험을 깊이 있게 기록합니다.",
+                meta: "엔지니어링 아카이브",
+                action: "글 읽어보기",
+                url: "#mylink",
+                isExternal: false,
+              },
+              {
+                title: "직접 문의 & 이메일",
+                desc: "프로젝트 협업, 기술 상담, 채용 제안 등 언제든 편하게 연락 주실 수 있습니다.",
+                meta: "aquadj99@gmail.com",
+                action: "이메일 복사",
+                copyValue: "aquadj99@gmail.com",
+                isCopy: true,
+              },
+            ].map((card, idx) => (
+              <div
+                key={idx}
+                className="flex flex-col justify-between rounded-[18px] border border-[#e0e0e0] bg-white p-6 transition-all duration-200 hover:border-zinc-300"
+              >
+                <div>
+                  <div className="h-10 w-10 rounded-[8px] bg-[#f5f5f7] flex items-center justify-center text-[#1d1d1f] mb-4">
+                    <span className="text-[15px] font-semibold">0{idx + 1}</span>
+                  </div>
+                  <h3 className="text-[17px] font-semibold tracking-[-0.01em] text-[#1d1d1f]">
+                    {card.title}
+                  </h3>
+                  <p className="mt-2 text-[14px] leading-relaxed text-zinc-600">
+                    {card.desc}
+                  </p>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-[#f0f0f0]">
+                  <span className="text-[12px] text-zinc-400 block mb-2 font-mono">
+                    {card.meta}
+                  </span>
+                  {card.isCopy ? (
+                    <button
+                      type="button"
+                      onClick={() => copyToClipboard(card.copyValue!, "이메일 주소")}
+                      className="text-[15px] font-normal text-[#0066cc] hover:underline cursor-default"
+                    >
+                      {card.action} ↗
+                    </button>
+                  ) : (
+                    <a
+                      href={card.url}
+                      target={card.isExternal ? "_blank" : undefined}
+                      rel={card.isExternal ? "noreferrer" : undefined}
+                      className="text-[15px] font-normal text-[#0066cc] hover:underline"
+                    >
+                      {card.action} ↗
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ========================================================= */}
+      {/* 섹션 4: 기술 스택 및 역량 칩 (화이트 #ffffff)              */}
+      {/* ========================================================= */}
+      <section id="capabilities" className="bg-white py-20 sm:py-24 text-center">
+        <div className="mx-auto max-w-[980px] px-4 sm:px-6">
+          
+          <h2 className="text-[34px] sm:text-[40px] font-semibold tracking-[-0.02em] text-[#1d1d1f]">
+            기술 스택 및 역량.
+          </h2>
+          <p className="mt-2 text-[17px] font-normal text-zinc-600 max-w-lg mx-auto">
+            속도, 정밀도, 그리고 지속 가능성을 위해 검증된 현대적인 도구들로 개발합니다.
+          </p>
+
+          {/* 알약 형태의 기술 스택 셀렉터 칩 */}
+          <div className="mt-10 flex flex-wrap justify-center gap-3 max-w-2xl mx-auto">
+            {stackChips.map((chip) => {
+              const isSelected = selectedChip === chip.id;
               return (
-                <a
-                  key={idx}
-                  href={link.url}
-                  target={link.isExternal ? "_blank" : undefined}
-                  rel={link.isExternal ? "noopener noreferrer" : undefined}
-                  className="group block w-full rounded-2xl border border-zinc-200/80 bg-white/60 p-3.5 shadow-sm backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-indigo-300 hover:bg-white hover:shadow-md dark:border-zinc-800 dark:bg-zinc-800/40 dark:hover:border-indigo-500/50 dark:hover:bg-zinc-800/80 cursor-pointer"
+                <button
+                  key={chip.id}
+                  type="button"
+                  onClick={() => setSelectedChip(chip.id)}
+                  className={`apple-press-scale rounded-full px-4 py-3 text-[14px] transition-all cursor-default ${
+                    isSelected
+                      ? "border-2 border-[#0071e3] bg-white font-semibold text-[#1d1d1f]"
+                      : "border border-[#e0e0e0] bg-[#fafafc] font-normal text-zinc-700 hover:border-zinc-400"
+                  }`}
                 >
-                  {content}
-                </a>
+                  {chip.label}
+                </button>
               );
             })}
           </div>
 
-          {/* Tech Stack Pills */}
-          <div className="mt-8">
-            <h2 className="mb-3 px-1 text-xs font-bold tracking-wider text-zinc-400 uppercase dark:text-zinc-500">
-              Tech Stack &amp; Skills
-            </h2>
-            <div className="flex flex-wrap gap-2">
-              {skills.map((skill, index) => (
-                <span
-                  key={index}
-                  className="inline-flex items-center rounded-xl border border-zinc-200/80 bg-white/80 px-3 py-1.5 text-xs font-medium text-zinc-700 shadow-sm backdrop-blur-sm transition-all hover:border-indigo-300 hover:text-indigo-600 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300 dark:hover:border-zinc-700 dark:hover:text-white"
-                >
-                  <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500" />
-                  {skill.name}
-                </span>
-              ))}
+          {/* 선택된 칩 상세 설명 박스 */}
+          <div className="mt-8 mx-auto max-w-md rounded-[18px] bg-[#f5f5f7] p-6 border border-[#e0e0e0]">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#0066cc]">
+              아키텍처 세부 사항
+            </span>
+            <p className="mt-2 text-[17px] font-normal text-[#1d1d1f]">
+              {stackChips.find((c) => c.id === selectedChip)?.desc}
+            </p>
+          </div>
+
+          <div className="mt-10">
+            <a
+              href="mailto:aquadj99@gmail.com"
+              className="apple-press-scale inline-flex items-center justify-center rounded-full bg-[#0066cc] px-6 py-3 text-[17px] font-normal text-white hover:bg-[#0071e3] transition-colors"
+            >
+              대화 시작하기
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ========================================================= */}
+      {/* 5. 푸터: 파치먼트 (#f5f5f7), 2.41 행간의 여유로운 링크     */}
+      {/* ========================================================= */}
+      <footer id="contact" className="bg-[#f5f5f7] border-t border-[#0000000d] py-14 text-zinc-500">
+        <div className="mx-auto max-w-[1024px] px-4 sm:px-6">
+          
+          <div className="border-b border-zinc-200 pb-4 text-[12px] leading-relaxed text-zinc-500">
+            <p>
+              1. MyLink는 이동재 개발자가 직접 설계 및 관리하는 공식 프로필 허브입니다. 최신 웹 표준 및 브라우저 엔진에 완벽히 최적화되어 있습니다.
+            </p>
+            <p className="mt-1">
+              2. 주요 기반 기술은 Next.js 16, React 19, TypeScript 및 Tailwind CSS입니다. 모든 권리는 해당 소유자에게 귀속됩니다.
+            </p>
+          </div>
+
+          {/* 컬럼 링크 그리드 */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 py-8 text-[12px]">
+            <div>
+              <h4 className="font-semibold text-[#1d1d1f] mb-2 text-[13px]">
+                프로필
+              </h4>
+              <ul className="space-y-2 leading-[2.41]">
+                <li><a href="#overview" className="hover:underline">개요</a></li>
+                <li><a href="#mylink" className="hover:underline">엔지니어링 원칙</a></li>
+                <li><a href="#hubs" className="hover:underline">프로젝트 쇼케이스</a></li>
+                <li><a href="#capabilities" className="hover:underline">핵심 역량</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-[#1d1d1f] mb-2 text-[13px]">
+                연결 허브
+              </h4>
+              <ul className="space-y-2 leading-[2.41]">
+                <li><a href="https://github.com/aquadj99" target="_blank" rel="noreferrer" className="hover:underline">GitHub</a></li>
+                <li><a href="#hubs" className="hover:underline">포트폴리오</a></li>
+                <li><a href="#hubs" className="hover:underline">기술 블로그</a></li>
+                <li><a href="https://linkedin.com" target="_blank" rel="noreferrer" className="hover:underline">LinkedIn</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-[#1d1d1f] mb-2 text-[13px]">
+                기술 스택
+              </h4>
+              <ul className="space-y-2 leading-[2.41]">
+                <li><a href="#capabilities" className="hover:underline">Next.js 16 (App Router)</a></li>
+                <li><a href="#capabilities" className="hover:underline">React 19 동시성 렌더링</a></li>
+                <li><a href="#capabilities" className="hover:underline">TypeScript 엄격 모드</a></li>
+                <li><a href="#capabilities" className="hover:underline">Tailwind CSS 4.0</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-[#1d1d1f] mb-2 text-[13px]">
+                직접 문의
+              </h4>
+              <ul className="space-y-2 leading-[2.41]">
+                <li><a href="mailto:aquadj99@gmail.com" className="hover:underline">이메일 보내기</a></li>
+                <li><span className="text-zinc-400">대한민국 서울</span></li>
+                <li><span className="text-zinc-400">프로젝트 협업 환영</span></li>
+              </ul>
             </div>
           </div>
-        </section>
 
-        {/* Footer */}
-        <footer className="mt-10 flex flex-col items-center gap-2 text-center text-xs text-zinc-500 dark:text-zinc-400">
-          <p>© 2026 Dongjae Lee. All rights reserved.</p>
-          <p className="flex items-center gap-1">
-            Built with
-            <span className="font-semibold text-zinc-700 dark:text-zinc-300">Next.js 16</span>
-            &amp;
-            <span className="font-semibold text-zinc-700 dark:text-zinc-300">Tailwind CSS</span>
-          </p>
-        </footer>
-      </main>
+          <div className="border-t border-zinc-200 pt-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-[12px] text-zinc-500">
+            <p>
+              Copyright © 2026 이동재. All rights reserved.
+            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="hover:underline cursor-default">개인정보 처리방침</span>
+              <span>|</span>
+              <span className="hover:underline cursor-default">이용약관</span>
+              <span>|</span>
+              <span className="hover:underline cursor-default">법적 고지</span>
+              <span>|</span>
+              <span className="hover:underline cursor-default">사이트맵</span>
+            </div>
+          </div>
 
-      {/* Toast Notification */}
+        </div>
+      </footer>
+
+      {/* 부드러운 토스트 알림창 */}
       {copiedText && (
         <aside
           role="status"
           aria-live="polite"
-          className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 transform animate-in fade-in slide-in-from-bottom-4 duration-200"
+          className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 transform animate-in fade-in slide-in-from-bottom-2 duration-200"
         >
-          <div className="flex items-center gap-2 rounded-full bg-zinc-900/90 px-4 py-2 text-xs font-medium text-white shadow-lg backdrop-blur-md dark:bg-white/90 dark:text-zinc-900">
-            <svg className="h-4 w-4 text-emerald-400 dark:text-emerald-600" fill="currentColor" viewBox="0 0 20 20">
+          <div className="apple-frosted flex items-center gap-2 rounded-full border border-black/10 px-5 py-2.5 text-[14px] font-normal text-[#1d1d1f] shadow-lg">
+            <svg className="h-4 w-4 text-[#0066cc]" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
             </svg>
-            {copiedText}
+            <span>{copiedText}</span>
           </div>
         </aside>
       )}
+
     </div>
   );
-}
-
-function renderIcon(icon: string) {
-  switch (icon) {
-    case "github":
-      return (
-        <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
-          <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-        </svg>
-      );
-    case "portfolio":
-      return (
-        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
-        </svg>
-      );
-    case "blog":
-      return (
-        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-        </svg>
-      );
-    case "linkedin":
-      return (
-        <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
-          <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.67 1.67 0 1 0 0-3.34 1.67 1.67 0 0 0 0 3.34m1.39 9.74v-8.37H5.07v8.37h2.78z" />
-        </svg>
-      );
-    case "email":
-      return (
-        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-        </svg>
-      );
-    default:
-      return (
-        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
-        </svg>
-      );
-  }
 }
